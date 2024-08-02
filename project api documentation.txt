@@ -1,0 +1,287 @@
+swagger: '2.0'
+info:
+  title: Survey Form App
+  version: 1.0.0
+paths:
+  /set/{setname}:
+    get:
+      tags:
+        - Sets
+
+      summary: Get a set by name
+      parameters:
+        - name: setname
+          in: path
+          required: true
+
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+                $ref: '#/definitions/Sets'
+      
+            
+    delete:
+      tags:
+        - Sets
+      summary: Delete a set by name
+      parameters:
+        - name: setname
+          in: path
+          required: true
+          type: string
+      responses:
+        '204':
+          description: No Content
+
+  /sets:
+    get:
+      tags:
+        - Sets
+      summary: Get all sets
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Sets'
+    
+    post:
+      tags:
+        - Sets
+      summary: Create a new set
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Sets'
+      responses:
+        '201':
+          description: Created
+          
+
+  /ques:
+    get:
+      tags:
+        - Questions
+      summary: Get all questions
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Questions'
+
+    post:
+      tags:
+        - Questions
+      summary: Create a new question
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Questions'
+      responses:
+        '201':
+          description: Created
+
+  /ques/{quesid}:
+    get:
+      tags:
+        - Questions
+      summary: Get a question by ID
+      parameters:
+        - name: quesid
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Questions'
+    put:
+      tags:
+        - Questions
+      summary: Update a question by ID
+      parameters:
+        - name: quesid
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Questions'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      tags:
+        - Questions
+      summary: Delete a question by ID
+      parameters:
+        - name: quesid
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: No Content
+
+  /ques/setname/{setname}/display:
+    get:
+      tags:
+        - Questions
+      summary: Get questions by set name
+      parameters:
+        - name: setname
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Questions'
+  /ques/setname/{setname}/add/{quesid}:
+    post:
+      tags:
+        - Questions
+      summary: Post questions from existing set
+      parameters:
+        - name: setname 
+          in: path
+          required: true
+          type: string
+        - name: quesid
+          in: path
+          required: true
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/Questions'
+    
+  /options/quesid/{quesid}:
+    get:
+      tags:
+        - Options
+      summary: Get options by question ID
+      parameters:
+        - name: quesid
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Options'
+  /options:
+    post:
+      tags:
+        - Options
+      summary: Create a new option
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Options'
+      responses:
+        '201':
+          description: Created
+  /options/{optionsid}:
+    put:
+      tags:
+        - Options
+      summary: Update a options by ID
+      parameters:
+        - name: optionsid
+          in: path
+          required: true
+          type: integer
+          format: int64
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Options'
+      responses:
+        '200':
+          description: Updated
+    delete:
+      tags:
+        - Options
+      summary: Delete a option by ID
+      parameters:
+        - name: optionsid
+          in: path
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '204':
+          description: No Content
+
+definitions:
+  Sets:
+    type: object
+    properties:
+      setname:
+        type: string
+      domain:
+        type: string
+      createdby:
+        type: string
+      questionsList:
+        type: array
+        items:
+          $ref: '#/definitions/Questions'
+
+  Questions:
+    type: object
+    properties:
+      quesid:
+        type: integer
+        format: int64
+      setname:
+        type: string
+      questext:
+        type: string
+      optionsList:
+        type: array
+        items:
+          $ref: '#/definitions/Options'
+
+  Options:
+    type: object
+    properties:
+      optionsid:
+        type: integer
+        format: int64
+      quesid:
+        type: integer
+        format: int64
+      optiontext:
+        type: string
