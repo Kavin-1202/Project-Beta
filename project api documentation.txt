@@ -1,287 +1,278 @@
-swagger: '2.0'
+openapi: 3.0.3
 info:
-  title: Survey Form App
+  title: Assessment 
+  description: API documentation for the Assessment Project with endpoints for managing sets, questions, and options.
   version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
 paths:
-  /set/{setname}:
+  /dashboard:
     get:
       tags:
-        - Sets
-
-      summary: Get a set by name
-      parameters:
-        - name: setname
-          in: path
-          required: true
-
-          type: string
+        - Dashboard
+      summary: Retrieve a list of requests
       responses:
         '200':
-          description: Success
-          schema:
-            type: array
-            items:
-                $ref: '#/definitions/Sets'
-      
-            
-    delete:
-      tags:
-        - Sets
-      summary: Delete a set by name
-      parameters:
-        - name: setname
-          in: path
-          required: true
-          type: string
-      responses:
-        '204':
-          description: No Content
-
-  /sets:
+          description: A list of requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    slno:
+                      type: integer
+                    surveyid:
+                      type: string
+                    requestor:
+                      type: string
+                    companyname:
+                      type: string
+                    domain:
+                      type: string
+                    status:
+                      type: string
+  /createassessment:
     get:
       tags:
-        - Sets
-      summary: Get all sets
+        - CreateAssessment
+      summary: Retrieve a list of assessments
       responses:
         '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Sets'
-    
+          description: A list of assessments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    slno:
+                      type: integer
+                    setname:
+                      type: string
+                    createdby:
+                      type: string
+                    domain:
+                      type: string
+                    status:
+                      type: string
+
+  /createassessment/newassessment:
     post:
       tags:
-        - Sets
-      summary: Create a new set
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Sets'
+        - CreateAssessment
+      summary: Create a new assessment
+      requestBody:
+        description: Details for the new assessment
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                setname:
+                  type: string
+                domain:
+                  type: string
+        # required:
+        #   - setname
+        #   - domain
       responses:
         '201':
-          description: Created
-          
+          description: Assessment created successfully
 
-  /ques:
-    get:
-      tags:
-        - Questions
-      summary: Get all questions
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Questions'
-
+  /createassessment/{setname}/addquestion:
     post:
       tags:
-        - Questions
-      summary: Create a new question
+        - CreateAssessment
+      summary: Add questions to an assessment
       parameters:
-        - name: body
-          in: body
+        - in: path
+          name: setname
           required: true
           schema:
-            $ref: '#/definitions/Questions'
-      responses:
-        '201':
-          description: Created
-
-  /ques/{quesid}:
-    get:
-      tags:
-        - Questions
-      summary: Get a question by ID
-      parameters:
-        - name: quesid
-          in: path
-          required: true
-          type: integer
-          format: int64
+            type: string
+      requestBody:
+        description: List of questions to add
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questionid:
+                  type: integer
+                questions:
+                  type: string
+                options:
+                  items:
+                     type: array
+                     answers:
+                      type: string
+                     suggestions:
+                      type: string
+        # required:
+        #   - questions
       responses:
         '200':
-          description: Success
+          description: Questions added successfully
+
+  /createassessment/{setname}/question:
+    get:
+      tags:
+        - CreateAssessment
+      summary: Retrieve details of an assessment
+      parameters:
+        - in: path
+          name: setname
+          required: true
           schema:
-            $ref: '#/definitions/Questions'
+            type: string
+      responses:
+        '200':
+          description: Assessment details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  setname:
+                    type: string
+                  domain:
+                    type: string
+                  createdby:
+                    type: string
+                  createdtime:
+                    type: string
+                    format: date-time
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        question:
+                          type: string
+                        options:
+                          type: array
+                          items:
+                            type: string
+
+  /createassessment/{setname}/question/{questionid}:
     put:
       tags:
-        - Questions
-      summary: Update a question by ID
+        - CreateAssessment
+      summary: Update a specific question in an assessment
       parameters:
-        - name: quesid
-          in: path
-          required: true
-          type: integer
-          format: int64
-        - name: body
-          in: body
+        - in: path
+          name: setname
           required: true
           schema:
-            $ref: '#/definitions/Questions'
+            type: string
+        - in: path
+          name: questionid
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated question details
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                options:
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      suggestion:
+                        type: string
+        # required:
+        #   - question
       responses:
         '200':
-          description: Updated
+          description: Question updated successfully
+
+  /createassessment/{setname}/questions/{questionId}:
     delete:
       tags:
-        - Questions
-      summary: Delete a question by ID
+        - CreateAssessment
+      summary: Delete a specific question from an assessment
       parameters:
-        - name: quesid
-          in: path
+        - in: path
+          name: setname
           required: true
-          type: integer
-          format: int64
+          schema:
+            type: string
+        - in: path
+          name: questionId
+          required: true
+          schema:
+            type: string
       responses:
         '204':
-          description: No Content
+          description: Question deleted successfully
 
-  /ques/setname/{setname}/display:
+  /createassessment/{setname}/display:
     get:
       tags:
-        - Questions
-      summary: Get questions by set name
+        - CreateAssessment
+      summary: Display a list of questions in an assessment
       parameters:
-        - name: setname
-          in: path
+        - in: path
+          name: setname
           required: true
-          type: string
+          schema:
+            type: string
       responses:
         '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Questions'
-  /ques/setname/{setname}/add/{quesid}:
+          description: List of questions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    questionid:
+                      type: integer
+                    question:
+                      type: string
+                    options:
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          suggestion:
+                            type: string
+
+  /survey:
     post:
       tags:
-        - Questions
-      summary: Post questions from existing set
-      parameters:
-        - name: setname 
-          in: path
-          required: true
-          type: string
-        - name: quesid
-          in: path
-          required: true
-          type: string
+        - Survey
+      summary: Submit a survey response
+      requestBody:
+        description: Survey response data
+        content:
+          application/json:
+            schema:
+                    properties:
+                      domain:
+                        type: string
+                      emailid:
+                        type: string
+                      status:
+                        type: string
+                      companyname:
+                        type: string
+        # required:
+        #   - responses
       responses:
         '201':
-          description: Success
-          schema: 
-            type: array
-            items:
-              $ref: '#/definitions/Questions'
-    
-  /options/quesid/{quesid}:
-    get:
-      tags:
-        - Options
-      summary: Get options by question ID
-      parameters:
-        - name: quesid
-          in: path
-          required: true
-          type: integer
-          format: int64
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Options'
-  /options:
-    post:
-      tags:
-        - Options
-      summary: Create a new option
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Options'
-      responses:
-        '201':
-          description: Created
-  /options/{optionsid}:
-    put:
-      tags:
-        - Options
-      summary: Update a options by ID
-      parameters:
-        - name: optionsid
-          in: path
-          required: true
-          type: integer
-          format: int64
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/Options'
-      responses:
-        '200':
-          description: Updated
-    delete:
-      tags:
-        - Options
-      summary: Delete a option by ID
-      parameters:
-        - name: optionsid
-          in: path
-          required: true
-          type: integer
-          format: int64
-      responses:
-        '204':
-          description: No Content
-
-definitions:
-  Sets:
-    type: object
-    properties:
-      setname:
-        type: string
-      domain:
-        type: string
-      createdby:
-        type: string
-      questionsList:
-        type: array
-        items:
-          $ref: '#/definitions/Questions'
-
-  Questions:
-    type: object
-    properties:
-      quesid:
-        type: integer
-        format: int64
-      setname:
-        type: string
-      questext:
-        type: string
-      optionsList:
-        type: array
-        items:
-          $ref: '#/definitions/Options'
-
-  Options:
-    type: object
-    properties:
-      optionsid:
-        type: integer
-        format: int64
-      quesid:
-        type: integer
-        format: int64
-      optiontext:
-        type: string
+          description: Survey response submitted successfully
