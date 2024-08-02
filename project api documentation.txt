@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Assessment 
-  description: API documentation for the Assessment Project with endpoints for managing sets, questions, and options.
+  description: API documentation for the Assessment Project with Options for managing Dashboard,CreateAssessment and Survey.
   version: 1.0.0
 
 servers:
