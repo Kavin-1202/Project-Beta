@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: Product IT Assessment API
+  description: API documentation for the Product IT Assessment Project with endpoints for creating assessments.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /assessments:
+    get:
+      tags:
+        - CreateAssessment
+      summary: Retrieve a list of assessments
+      responses:
+        '200':
+          description: A list of assessments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssessmentSummary'
+
+  /assessment/setname:
+    post:
+      tags:
+        - CreateAssessment
+      summary: Create a new assessment
+      requestBody:
+        description: Details for the new assessment
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssessmentRequest'
+      responses:
+        '201':
+          description: Assessment created successfully
+
+  /assessment/{setname}:
+    get:
+      tags:
+        - CreateAssessment
+      summary: Retrieve details of an assessment
+      parameters:
+        - in: path
+          name: setname
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Assessment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssessmentDetail'
+
+  /assessment/{setname}/edit/{questionId}:
+    put:
+      tags:
+        - CreateAssessment
+      summary: Update a specific question in an assessment
+      parameters:
+        - in: path
+          name: setname
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: questionId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated question details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateQuestionRequest'
+      responses:
+        '200':
+          description: Question updated successfully
+
+  /assessment/{setname}/{questionId}:
+    delete:
+      tags:
+        - CreateAssessment
+      summary: Delete a specific question from an assessment
+      parameters:
+        - in: path
+          name: setname
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: questionId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Question deleted successfully
+
+components:
+  schemas:
+    AssessmentSummary:
+      type: object
+      properties:
+        slno:
+          type: integer
+        setname:
+          type: string
+        createdby:
+          type: string
+        domain:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - initiated
+            - completed
+
+    CreateAssessmentRequest:
+      type: object
+      properties:
+        setname:
+          type: string
+        domain:
+          type: string
+        createdby:
+          type: string
+        questions:
+            type: array
+            items:
+              type: object
+              properties:
+                questionid:
+                  type: integer
+                question:
+                  type: string
+                Options: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                        suggestions:
+                          type: string
+        
+        
+
+    AssessmentDetail:
+      type: object
+      properties:
+        setname:
+          type: string
+        domain:
+          type: string
+        createdby:
+          type: string
+        createdtime:
+          type: string
+          format: date-time
+        questions:
+          type: array
+          items:
+                type: object
+                properties:
+                  questionid:
+                    type: integer
+                  question:
+                    type: string
+                  Options: 
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          value:
+                            type: string
+                          suggestions:
+                            type: string
+
+    UpdateQuestionRequest:
+      type: object
+      properties:
+        question:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              suggestion:
+                type: string

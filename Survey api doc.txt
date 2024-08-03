@@ -1,0 +1,114 @@
+openapi: 3.0.3
+info:
+  title: Product IT Assessment API
+  description: API documentation for the Product IT Assessment Project with endpoints for Survey.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /survey/{surveyid}:
+    get:
+      tags:
+        - Survey Details
+      summary: Retrieve each request by survey id
+      parameters:
+        - in: path
+          name: surveyid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Each request by surveyid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+  /survey:
+    get:
+      tags:
+        - Survey Details
+      summary: Retrieve a list of requests
+      responses:
+        '200':
+          description: A list of requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Survey'
+
+    post:
+      tags:
+        - Survey Details
+      summary: Submit a survey response
+      requestBody:
+        description: Survey response data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyRequest'
+      responses:
+        '201':
+          description: Survey response submitted successfully
+
+components:
+  schemas:
+    Survey:
+      type: object
+      properties:
+        slno:
+          type: integer
+        surveyid:
+          type: string
+        requestor:
+          type: string
+        companyname:
+          type: string
+        domain:
+          type: string
+        status:
+          type: string
+          enum:
+            - initiated
+            - pending
+            - completed
+        setname:
+          type: array
+          items:
+            type: object
+            properties:
+              questions:
+                type: string
+              Options: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      suggestions:
+                        type: string
+            
+
+    SurveyRequest:
+      type: object
+      properties:
+        domain:
+          type: string
+        emailid:
+          type: string
+        status:
+          type: string
+          enum:
+            - initiated
+            - pending
+            - completed
+        companyname:
+          type: string
+        setname:
+          type: string
+
