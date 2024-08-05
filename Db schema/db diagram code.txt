@@ -1,0 +1,39 @@
+Table Login{
+  username string [pk]
+  password string [not null]
+}
+Table survey {
+  surveyid string [increment]
+  requestor string
+  domain string
+  emailid string
+  status string
+  companyname string
+}
+
+Table createassessment {
+  slno integer
+  setname string [pk]
+  createdby string
+  domain string
+  status string
+}
+
+Table questions {
+  questionid integer [pk, increment]
+  setname string [not null]
+  question string
+}
+
+Table options {
+  optionid integer [pk, increment]
+  questionid integer [not null]
+  value string
+  suggestion string
+}
+
+
+Ref: Login.username > createassessment.createdby
+Ref: questions.setname > createassessment.setname
+Ref: options.questionid > questions.questionid
+Ref: Login.username > survey.requestor
