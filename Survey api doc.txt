@@ -109,6 +109,22 @@ components:
             - completed
         companyname:
           type: string
-        setname:
-          type: string
+        sets:
+          type: array
+          items:
+            type: object
+            properties:
+              setname: 
+                type: string
+              questions:
+                type: string
+              Options: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      suggestions:
+                        type: string
 
