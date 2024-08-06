@@ -11,12 +11,15 @@ Table survey {
   companyname string
 }
 
-Table createassessment {
-  slno integer
+Table Assessment {
+  sno integer
   setname string [pk]
   createdby string
   domain string
   status string
+  updatedby string
+  createdtime timestamp
+  updatedtime timestamp
 }
 
 Table questions {
@@ -33,7 +36,7 @@ Table options {
 }
 
 
-Ref: Login.username > createassessment.createdby
-Ref: questions.setname > createassessment.setname
+Ref: Login.username > Assessment.createdby
+Ref: questions.setname > Assessment.setname
 Ref: options.questionid > questions.questionid
 Ref: Login.username > survey.requestor
