@@ -1,0 +1,15 @@
+com\ust\AssessmentApi\repository\Setrepository.class
+com\ust\AssessmentApi\dto\Setdto.class
+com\ust\AssessmentApi\AssessmentApiApplication.class
+com\ust\AssessmentApi\dto\Questionsdto.class
+com\ust\AssessmentApi\model\Status.class
+com\ust\AssessmentApi\model\Person.class
+com\ust\AssessmentApi\model\Set.class
+com\ust\AssessmentApi\dto\Optionsdto.class
+com\ust\AssessmentApi\controller\Assessmentcontroller.class
+com\ust\AssessmentApi\model\Options.class
+com\ust\AssessmentApi\repository\Optionsrepository.class
+com\ust\AssessmentApi\utils\Apputils.class
+com\ust\AssessmentApi\model\Questions.class
+com\ust\AssessmentApi\service\Assessmentservice.class
+com\ust\AssessmentApi\repository\Questionsrepository.class
