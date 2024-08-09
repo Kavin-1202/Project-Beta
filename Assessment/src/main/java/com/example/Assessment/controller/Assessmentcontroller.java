@@ -43,9 +43,9 @@ public class Assessmentcontroller {
     }
 
     @ExceptionHandler(SetNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> handleSetNotFoundException(SetNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
     }
 
     @PutMapping("/assessment/{setId}/{question_id}")
