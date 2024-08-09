@@ -17,6 +17,7 @@ import java.util.List;
 @Table(name="assessments")
 public class Set {
     @Id
+
     private Long setId;
     private String setName;
     private String createdby;

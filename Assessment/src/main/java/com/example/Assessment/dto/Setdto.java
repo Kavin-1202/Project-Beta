@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Setdto {
-    private Long setId;
     private String setName;
     private String domain;
     private List<Questionsdto> questionList;

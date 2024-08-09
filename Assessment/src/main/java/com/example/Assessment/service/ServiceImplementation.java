@@ -1,5 +1,6 @@
 package com.example.Assessment.service;
 
+import com.example.Assessment.Exception.SetNotFoundException;
 import com.example.Assessment.dto.Questionsdto;
 import com.example.Assessment.dto.SetNameDto;
 import com.example.Assessment.dto.Setdto;
@@ -13,10 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
 public class ServiceImplementation implements AssessmentService {
+
+
+    private static final AtomicLong counter = new AtomicLong(0);
 
     @Autowired
     private Optionsrepository optionsrepository;
@@ -34,17 +39,19 @@ public class ServiceImplementation implements AssessmentService {
 
     public Set createSet(Setdto set1) {
         Set set = new Set();
-        set.setSetId(set1.getSetId());
+        long setid = generateUniqueNumber();
+        set.setSetId(setid);
         set.setSetName(set1.getSetName());
         set.setDomain(set1.getDomain());
         set.setCreatedby(Person.getName());
+        set.setUpdated_by(Person.getName());
         set.setStatus(Status.PENDING);
         set.setCreatedTimestamp(new Date());
-        set.setUpdatedTimestamp(null);
+        set.setUpdatedTimestamp(new Date());
         List<Questions> questionEntities = set1.getQuestionList().stream()
                 .map(questions -> {
                     Questions questionEntity = new Questions();
-                    questionEntity.setSetId(set1.getSetId());
+                    questionEntity.setSetId(setid);
                     questionEntity.setQuestion_description(questions.getQuestion_description());
                     return questionEntity;
                 })
@@ -58,6 +65,9 @@ public class ServiceImplementation implements AssessmentService {
 
     public List<SetNameDto> getSet(String  setName) {
         Set set = setrepository.findBySetNameIgnoreCase(setName).orElse(null);
+        if(set == null) {
+            throw new SetNotFoundException("Set not found.");
+        }
         List<Questions> questions= set.getQuestionList();
 
         return questions.stream().map(question -> {
@@ -72,10 +82,12 @@ public class ServiceImplementation implements AssessmentService {
 
     public List<Questions> updateQuestion(Long setId, Long question_id, Questionsdto qdto) {
         Set set = setrepository.findById(setId).orElse(null);
+        if(set == null) {
+            throw new SetNotFoundException("Set not found.");
+        }
         set.setUpdatedTimestamp(new Date());
         set.setUpdated_by(Person.getName());
         List<Questions> questions = questionsRepository.findBySetId(setId);
-
         for (Questions question : questions) {
             if (question.getQuestion_id() == question_id) {
 
@@ -104,6 +116,9 @@ public class ServiceImplementation implements AssessmentService {
                 // Update the question's options with the merged list
                 question.setOptions(existingOptions);
             }
+            else{
+                throw new SetNotFoundException("Question not found.");
+            }
         }
 
         // Save updated questions to database
@@ -116,6 +131,9 @@ public class ServiceImplementation implements AssessmentService {
 
     public boolean deleteQuestion(Long setId, Long question_id) {
         Set set = setrepository.findById(setId).orElse(null);
+        if(set == null) {
+            throw new SetNotFoundException("Set not found.");
+        }
         List<Questions> questions = set.getQuestionList();
         for(Questions question : questions) {
             if(question.getQuestion_id() == question_id) {
@@ -131,7 +149,15 @@ public class ServiceImplementation implements AssessmentService {
 
     public Set getSetById(Long setId) {
 
-        return setrepository.findById(setId).orElse(null);
+        Set set= setrepository.findById(setId).orElse(null);
+        if(set == null) {
+            throw new SetNotFoundException("Set not found.");
+        }
+        return set;
+    }
+
+    public static long generateUniqueNumber() {
+        return counter.incrementAndGet();
     }
 }
 
