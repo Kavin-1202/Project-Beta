@@ -20,7 +20,7 @@ public interface AssessmentService {
 
     List<SetNameDto> getSet(String  setName);
 
-    List<Questions> updateQuestion(Long setId, Long question_id, Questionsdto qdto);
+    Questions updateQuestion(Long setId, Long question_id, Questionsdto qdto);
 
     boolean deleteQuestion(Long setId, Long question_id);
 }

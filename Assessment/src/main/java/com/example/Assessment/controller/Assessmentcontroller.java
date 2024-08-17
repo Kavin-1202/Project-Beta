@@ -49,7 +49,7 @@ public class Assessmentcontroller {
     }
 
     @PutMapping("/assessment/{setId}/{question_id}")
-    public ResponseEntity<List<Questions>>updateQuestion(@PathVariable Long setId, @PathVariable Long question_id, @RequestBody Questionsdto qdto){
+    public ResponseEntity<Questions>updateQuestion(@PathVariable Long setId, @PathVariable Long question_id, @RequestBody Questionsdto qdto){
         Set set = assessmentService.getSetById(setId);
         if (set == null) {
             throw new SetNotFoundException("Set not found.");
