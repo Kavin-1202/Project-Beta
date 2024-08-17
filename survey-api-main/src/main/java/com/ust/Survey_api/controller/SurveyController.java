@@ -46,7 +46,6 @@ public class SurveyController {
     @GetMapping("/survey/setName/{setName}")
     public ResponseEntity<?> getQuestionsBySetName(@PathVariable String setName){
         List<SetNameDto> listOfQuestions= surveyService.getSet(setName);
-
         return ResponseEntity.ok(listOfQuestions);
     }
 

@@ -23,5 +23,7 @@ public class Survey {
     public List<String> email;
     public String companyName;
     public String setName;
+    public String questionId;
+
 
 }

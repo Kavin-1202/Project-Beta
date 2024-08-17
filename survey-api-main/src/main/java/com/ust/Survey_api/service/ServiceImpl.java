@@ -9,6 +9,7 @@ import com.ust.Survey_api.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -33,9 +34,22 @@ public class ServiceImpl  implements  SurveyService{
         fr.setEmail(survey.getEmail());
         fr.setSetName(survey.getSetName());
         fr.setCompanyName(survey.getCompanyName());
-        List<SetNameDto> optionalSetData = client.getSet(survey.getSetName()).getBody();
-//        List<SetNameDto> optionalSetData = client.getSet(survey.getSetName()).getBody();
-        fr.setSetdata(optionalSetData);
+        List<SetNameDto> optionalSetData = null;
+        try {
+            optionalSetData = client.getSet(survey.getSetName()).getBody();
+        } catch (Exception e) {
+            throw new SetNotFoundException("Set not found.");
+        }
+        List<SetNameDto> ques=new ArrayList<SetNameDto>();
+        for(SetNameDto setName : optionalSetData){
+            if(StringToList(survey.getQuestionId()).contains(setName.getQuestion_id())){
+                ques.add(setName);
+            }
+            else{
+                throw new SetNotFoundException("Question not found in set");
+            }
+        }
+        fr.setSetdata(ques);
         repo.save(survey);
         return fr;
     }
@@ -80,19 +94,18 @@ public class ServiceImpl  implements  SurveyService{
 
     @Override
     public List<SetNameDto> getSet(String setName) {
-        List<SetNameDto> setdata =client.getSet(setName).getBody();
-//        if(setdata != null){
-//            return setdata;
-//        }
-//        else{
-//            throw new NotFoundException("Invalid setname");
-//        }
+        List<SetNameDto> setdata= null;
         try{
+            setdata =client.getSet(setName).getBody();
             return setdata;
         }
-        catch(SetNotFoundException e){
+        catch(Exception e){
             throw new SetNotFoundException("Invalid setname");
         }
+    }
+    public List<Long>StringToList(String questionids){
+        List<Long> list = Arrays.stream(questionids.split(",")).map(Long::parseLong).toList();
+        return list;
     }
 
 
