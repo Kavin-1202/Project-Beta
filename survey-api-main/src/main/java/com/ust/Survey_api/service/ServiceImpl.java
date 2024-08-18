@@ -82,6 +82,9 @@ public class ServiceImpl  implements  SurveyService{
                 dtoList.add(ques);
             }
         }
+        if(dtoList.isEmpty()){
+            throw new SetNotFoundException("question not found in set");
+        }
         return dtoList;
     }
 
