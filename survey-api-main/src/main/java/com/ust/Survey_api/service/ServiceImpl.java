@@ -40,14 +40,14 @@ public class ServiceImpl  implements  SurveyService{
         } catch (Exception e) {
             throw new SetNotFoundException("Set not found.");
         }
-        List<SetNameDto> ques=new ArrayList<SetNameDto>();
+        List<SetNameDto> ques=new ArrayList<>();
         for(SetNameDto setName : optionalSetData){
             if(StringToList(survey.getQuestionId()).contains(setName.getQuestion_id())){
                 ques.add(setName);
             }
-            else{
-                throw new SetNotFoundException("Question not found in set");
-            }
+        }
+        if(ques.isEmpty()){
+            throw new SetNotFoundException("No valid questions found in set");
         }
         fr.setSetdata(ques);
         repo.save(survey);
@@ -67,10 +67,22 @@ public class ServiceImpl  implements  SurveyService{
             fr.setEmail(survey.getEmail());
             fr.setSetName(survey.getSetName());
             fr.setCompanyName(survey.getCompanyName());
-            fr.setSetdata(client.getSet(survey.getSetName()).getBody());
+            List<SetNameDto> dtos = client.getSet(survey.getSetName()).getBody();
+            String questionids=survey.getQuestionId();
+            List<SetNameDto> dtoList = getQuestionsbyid(dtos,questionids);
+            fr.setSetdata(dtoList);
             frs.add(fr);
         }
         return frs;
+    }
+    public List<SetNameDto> getQuestionsbyid(List<SetNameDto> dto,String questionid){
+        List<SetNameDto> dtoList = new ArrayList<SetNameDto>();
+        for(SetNameDto ques : dto){
+            if(StringToList(questionid).contains(ques.getQuestion_id())){
+                dtoList.add(ques);
+            }
+        }
+        return dtoList;
     }
 
     @Override
@@ -86,11 +98,12 @@ public class ServiceImpl  implements  SurveyService{
         fr.setEmail(survey.getEmail());
         fr.setSetName(survey.getSetName());
         fr.setCompanyName(survey.getCompanyName());
-        fr.setSetdata(client.getSet(survey.getSetName()).getBody());
+        List<SetNameDto> dtos = client.getSet(survey.getSetName()).getBody();
+        String questionids=survey.getQuestionId();
+        List<SetNameDto> dtoList = getQuestionsbyid(dtos,questionids);
+        fr.setSetdata(dtoList);
         return fr;
     }
-
-
 
     @Override
     public List<SetNameDto> getSet(String setName) {
