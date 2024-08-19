@@ -25,7 +25,6 @@ public class ServiceImplementation implements AssessmentService {
 
     private static final AtomicLong setcounter = new AtomicLong(0);
     private static final AtomicLong questioncounter = new AtomicLong(0);
-    private static final AtomicLong optioncounter = new AtomicLong(0);
 
     @Autowired
     private Optionsrepository optionsrepository;
@@ -159,7 +158,6 @@ public class ServiceImplementation implements AssessmentService {
         List<Options> newOptionsEntities = questionDto.getOptionsdtoList().stream()
                 .map(optionDto -> {
                     Options optionsEntity = new Options();
-//                    optionsEntity.setOptionid(generateUniqueNumberForOptionId()); // Generate a unique option id
                     optionsEntity.setQuestion_id(questionId);// Link the option to the question
                     optionsEntity.setAnswer(optionDto.getAnswer());
                     optionsEntity.setSuggestion(optionDto.getSuggestion());
@@ -173,62 +171,6 @@ public class ServiceImplementation implements AssessmentService {
         Questions q=questionsRepository.save(question);
         return questionsRepository.save(q);
     }
-
-//    public List<Questions> updateQuestion(Long setId, Long question_id, Questionsdto qdto) {
-//        // Retrieve the set by ID
-//        Set set = setrepository.findById(setId).orElse(null);
-//        if (set == null) {
-//            throw new SetNotFoundException("Set not found.");
-//        }
-//
-//        // Update the set's timestamp and updated_by fields
-//        set.setUpdatedTimestamp(new Date());
-//        set.setUpdated_by(Person.getName());
-//
-//        // Retrieve the question to be updated
-//        Questions question = questionsRepository.findById(question_id).orElse(null);
-//        if (question == null || !question.getSetId().equals(setId)) {
-//            throw new SetNotFoundException("Question not found.");
-//        }
-//
-//        // Retrieve existing options
-//        List<Options> existingOptions = question.getOptions();
-//        if (existingOptions == null) {
-//            existingOptions = new ArrayList<>();
-//        }
-//
-////        // Generate unique ID starting from the current maximum option ID for the question
-//        final Long[] maxOptionId = {existingOptions.stream()
-//                .mapToLong(Options::getOptionid)
-//                .max()
-//                .orElse(0L)};
-//
-//        List<Options> newOptionsEntities = qdto.getOptionsdtoList().stream()
-//                .map(option -> {
-//                    Options optionsEntity = new Options();
-//                    optionsEntity.setOptionid(++maxOptionId[0]); // Generate unique option ID
-//                    optionsEntity.setQuestion_id(question_id);
-//                    optionsEntity.setAnswer(option.getAnswer());
-//                    optionsEntity.setSuggestion(option.getSuggestion());
-//                    return optionsEntity;
-//                })
-//                .collect(Collectors.toList());
-//
-//        // Add new options to existing options list
-//        existingOptions.addAll(newOptionsEntities);
-//
-//        // Detach any existing instances to avoid conflict
-//        optionsrepository.saveAll(newOptionsEntities);
-//
-//        // Update the question's options with the merged list
-//        question.setOptions(existingOptions);
-//
-//        // Save the updated question to the database
-//        questionsRepository.save(question);
-//        set.setQuestionList(List.of(question));
-//        setrepository.save(set);
-//        return List.of(question);
-//    }
 
     public boolean deleteQuestion(Long setId, Long question_id) {
         Set set = setrepository.findById(setId).orElse(null);
@@ -262,9 +204,6 @@ public class ServiceImplementation implements AssessmentService {
     }
     public static long generateUniqueNumberForQuestionId() {
         return questioncounter.incrementAndGet();
-    }
-    public static long generateUniqueNumberForOptionId() {
-        return optioncounter.incrementAndGet();
     }
 }
 

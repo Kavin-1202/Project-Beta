@@ -40,16 +40,21 @@ public class ServiceImpl  implements  SurveyService{
         } catch (Exception e) {
             throw new SetNotFoundException("Set not found.");
         }
-        List<SetNameDto> ques=new ArrayList<>();
-        for(SetNameDto setName : optionalSetData){
-            if(StringToList(survey.getQuestionId()).contains(setName.getQuestion_id())){
-                ques.add(setName);
+        if(survey.getQuestionId()==null || survey.getQuestionId()==""){
+            fr.setSetdata(optionalSetData);
+        }
+        else {
+            List<SetNameDto> ques = new ArrayList<>();
+            for (SetNameDto setName : optionalSetData) {
+                if (StringToList(survey.getQuestionId()).contains(setName.getQuestion_id())) {
+                    ques.add(setName);
+                }
             }
+            if (ques.isEmpty()) {
+                throw new SetNotFoundException("No valid questions found in set");
+            }
+            fr.setSetdata(ques);
         }
-        if(ques.isEmpty()){
-            throw new SetNotFoundException("No valid questions found in set");
-        }
-        fr.setSetdata(ques);
         repo.save(survey);
         return fr;
     }
@@ -57,7 +62,13 @@ public class ServiceImpl  implements  SurveyService{
     @Override
     public List<FullResponse> getSurveys() {
         List<FullResponse> frs = new ArrayList<FullResponse>();
-        List<Survey> surveys =  repo.findAll();
+        List<Survey> surveys = null;
+        try{
+             surveys =  repo.findAll();
+        }
+        catch(Exception e){
+            throw new SetNotFoundException("Invalid survey id");
+        }
         for (Survey survey : surveys) {
             FullResponse fr = new FullResponse();
             long id = counter.incrementAndGet();
@@ -77,22 +88,26 @@ public class ServiceImpl  implements  SurveyService{
     }
     public List<SetNameDto> getQuestionsbyid(List<SetNameDto> dto,String questionid){
         List<SetNameDto> dtoList = new ArrayList<SetNameDto>();
-        for(SetNameDto ques : dto){
-            if(StringToList(questionid).contains(ques.getQuestion_id())){
-                dtoList.add(ques);
+        if(questionid==null ||questionid.isEmpty()){
+            return dto;
+        }
+        else{
+            for(SetNameDto ques : dto){
+                if(StringToList(questionid).contains(ques.getQuestion_id())){
+                    dtoList.add(ques);
+                }
             }
+            return dtoList;
         }
-        if(dtoList.isEmpty()){
-            throw new SetNotFoundException("question not found in set");
-        }
-        return dtoList;
     }
 
     @Override
     public FullResponse getSurveyById(Long surveyId) {
         FullResponse fr = new FullResponse();
+
         Survey survey = repo.findBySurveyId(surveyId);
-        if(survey == null) {
+
+        if(survey == null){
             throw new SetNotFoundException("Invalid survey id");
         }
         fr.setSurveyId(survey.getSurveyId());
