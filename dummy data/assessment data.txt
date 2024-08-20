@@ -1,0 +1,176 @@
+{
+  "setName": "Azure On-Premises Migration",
+  "domain": "Cloud Computing",
+  "questionList": [
+    {
+      "question_description": "What are the primary reasons for migrating to Azure from on-premises infrastructure?",
+      "optionsdtoList": [
+        {
+          "answer": "Cost Savings",
+          "suggestion": "Consider the potential reduction in hardware and maintenance costs."
+        },
+        {
+          "answer": "Scalability",
+          "suggestion": "Evaluate how Azure's scalability can meet your business growth needs."
+        },
+        {
+          "answer": "Disaster Recovery",
+          "suggestion": "Look into Azure's disaster recovery options compared to your current setup."
+        }
+      ]
+    },
+    {
+      "question_description": "Which Azure service would be most suitable for your current on-premises workloads?",
+      "optionsdtoList": [
+        {
+          "answer": "Azure Virtual Machines",
+          "suggestion": "Best for migrating existing VMs and applications with minimal changes."
+        },
+        {
+          "answer": "Azure App Service",
+          "suggestion": "Consider for web applications and API management."
+        },
+        {
+          "answer": "Azure Kubernetes Service (AKS)",
+          "suggestion": "Evaluate if container orchestration is required for your applications."
+        }
+      ]
+    },
+    {
+      "question_description": "What challenges do you foresee during the migration to Azure?",
+      "optionsdtoList": [
+        {
+          "answer": "Data Security",
+          "suggestion": "Review Azure's security compliance offerings and best practices."
+        },
+        {
+          "answer": "Downtime",
+          "suggestion": "Plan a migration strategy to minimize disruption to business operations."
+        },
+        {
+          "answer": "Cost Management",
+          "suggestion": "Use Azure's cost management tools to track and optimize expenses."
+        }
+      ]
+    }
+  ]
+}
+
+
+{
+  "setName": "AWS On-Premises Migration",
+  "domain": "Cloud Computing",
+  "questionList": [
+    {
+      "question_description": "What are the key drivers for migrating to AWS from your on-premises infrastructure?",
+      "optionsdtoList": [
+        {
+          "answer": "Operational Efficiency",
+          "suggestion": "Consider how AWS services can streamline your IT operations."
+        },
+        {
+          "answer": "Global Reach",
+          "suggestion": "Evaluate the benefits of AWS's global infrastructure for your business."
+        },
+        {
+          "answer": "Innovation",
+          "suggestion": "Look into how AWS can accelerate your adoption of new technologies."
+        }
+      ]
+    },
+    {
+      "question_description": "Which AWS service would best fit your current on-premises workloads?",
+      "optionsdtoList": [
+        {
+          "answer": "Amazon EC2",
+          "suggestion": "Ideal for running scalable applications with minimal changes."
+        },
+        {
+          "answer": "Amazon RDS",
+          "suggestion": "Consider for managed relational databases with minimal administration."
+        },
+        {
+          "answer": "Amazon EKS",
+          "suggestion": "Evaluate if managed Kubernetes is needed for containerized applications."
+        }
+      ]
+    },
+    {
+      "question_description": "What concerns do you have about migrating to AWS?",
+      "optionsdtoList": [
+        {
+          "answer": "Data Privacy",
+          "suggestion": "Review AWS’s security compliance features to address privacy concerns."
+        },
+        {
+          "answer": "Migration Complexity",
+          "suggestion": "Plan a phased migration strategy to handle complex workloads."
+        },
+        {
+          "answer": "Cost Management",
+          "suggestion": "Use AWS Cost Explorer to monitor and optimize your cloud spending."
+        }
+      ]
+    }
+  ]
+}
+
+
+{
+  "setName": "Google Cloud On-Premises Migration",
+  "domain": "Cloud Computing",
+  "questionList": [
+    {
+      "question_description": "What are the main reasons for considering a migration to Google Cloud from your on-premises environment?",
+      "optionsdtoList": partially include contextual information":[
+        {
+          "answer": "Machine Learning Integration",
+          "suggestion": "Consider the benefits of Google’s AI and ML tools for your business."
+        },
+        {
+          "answer": "Big Data Processing",
+          "suggestion": "Evaluate how Google Cloud’s data analytics services can handle large datasets."
+        },
+        {
+          "answer": "Security and Compliance",
+          "suggestion": "Look into Google Cloud’s security features and compliance certifications."
+        }
+      ]
+    },
+    {
+      "question_description": "Which Google Cloud service aligns best with your current on-premises workloads?",
+      "optionsdtoList": [
+        {
+          "answer": "Compute Engine",
+          "suggestion": "Ideal for running virtual machines in a scalable cloud environment."
+        },
+        {
+          "answer": "Google Kubernetes Engine (GKE)",
+          "suggestion": "Consider for managing containerized applications with Kubernetes."
+        },
+        {
+          "answer": "Cloud SQL",
+          "suggestion": "Use for managed relational databases with high availability and performance."
+        }
+      ]
+    },
+    {
+      "question_description": "What challenges do you anticipate during the migration to Google Cloud?",
+      "optionsdtoList": [
+        {
+          "answer": "Data Migration",
+          "suggestion": "Plan for data transfer strategies using Google’s migration tools."
+        },
+        {
+          "answer": "Skill Gaps",
+          "suggestion": "Identify training opportunities to upskill your team on Google Cloud."
+        },
+        {
+          "answer": "Vendor Lock-in",
+          "suggestion": "Consider multi-cloud strategies to avoid dependency on a single provider."
+        }
+      ]
+    }
+  ]
+}
+

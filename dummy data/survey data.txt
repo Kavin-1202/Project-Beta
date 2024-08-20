@@ -1,0 +1,25 @@
+{
+  "domain": "Cloud Computing",
+  "status": "PENDING",
+  "email": [
+    "cloudadmin@innovatesolutions.com",
+    "cto@innovatesolutions.com"
+  ],
+  "companyName": "Innovate Solutions",
+  "setName": "AWS On-Premises Migration",
+  "questionId": "1,2,3"
+}
+
+
+{
+  "domain": "Cloud Computing",
+  "status": "PENDING",
+  "email": [
+    "itmanager@nextgenapps.com",
+    "cloudlead@nextgenapps.com"
+  ],
+  "companyName": "NextGen Apps",
+  "setName": "Google Cloud On-Premises Migration",
+  "questionId": ""
+}
+
