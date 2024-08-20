@@ -169,26 +169,41 @@ public class ServiceImplementation implements AssessmentService {
         optionsrepository.saveAll(newOptionsEntities);
         question.setOptions(existingOptions);
         Questions q=questionsRepository.save(question);
-        return questionsRepository.save(q);
+//        return questionsRepository.save(q);
+        return q;
     }
 
-    public boolean deleteQuestion(Long setId, Long question_id) {
+    public boolean deleteQuestion(Long setId, Long questionId) {
         Set set = setrepository.findById(setId).orElse(null);
-        if(set == null) {
+        if (set == null) {
             throw new SetNotFoundException("Set not found.");
         }
+
         List<Questions> questions = set.getQuestionList();
-        for(Questions question : questions) {
-            if(question.getQuestion_id() == question_id) {
-                questions.remove(question);
-                set.setQuestionList(questions);
-                setrepository.save(set);
-                questionsRepository.deleteById(question_id);
-                return true;
-            }
+        if (questions == null) {
+            return false;
         }
-        return false;
+
+        // Find the question to delete
+        Questions questionToRemove = questions.stream()
+                .filter(q -> q.getQuestion_id().equals(questionId))
+                .findFirst()
+                .orElse(null);
+
+        if (questionToRemove == null) {
+            return false;
+        }
+
+        // Remove the question from the list and save the set
+        questions.remove(questionToRemove);
+        set.setQuestionList(questions);
+        setrepository.save(set);
+
+        // Delete the question from the repository
+        questionsRepository.deleteById(questionId);
+        return true;
     }
+
 
     public Set getSetById(Long setId) {
 
