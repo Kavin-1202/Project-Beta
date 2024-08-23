@@ -13,11 +13,9 @@ function App() {
           <Link to="/" className="mr-4 text-blue-500 hover:underline">Dashboard</Link>
           <Link to="/dashboard" className="mr-4 text-blue-500 hover:underline">AssessmentDashboard</Link>
           <Link to="/create" className="text-blue-500 hover:underline">Create Assessment</Link>
-          <Link to="/createsurvey" className="text-blue-500 hover:underline">Create Survey</Link>
         </nav>
         <Routes>
           <Route path="/create" element={<CreateAssessment />} />
-          <Route path="/createsurvey" element={<CreateSurvey />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>

@@ -23,10 +23,21 @@ function CreateAssessment() {
   const addQuestion = () => {
     setQuestions([...questions, { question_description: "", optionsdtoList: [{ answer: "", suggestion: "" }] }]);
   };
+  // Remove a question
+  const removeQuestion = (index) => {
+    const newQuestions = questions.filter((_, i) => i !== index);
+    setQuestions(newQuestions);
+  };
 
   const addOption = (qIndex) => {
     const newQuestions = [...questions];
     newQuestions[qIndex].optionsdtoList.push({ answer: "", suggestion: "" });
+    setQuestions(newQuestions);
+  };
+  // Remove an option from a specific question
+  const removeOption = (qIndex, oIndex) => {
+    const newQuestions = [...questions];
+    newQuestions[qIndex].optionsdtoList = newQuestions[qIndex].optionsdtoList.filter((_, i) => i !== oIndex);
     setQuestions(newQuestions);
   };
 
@@ -106,6 +117,14 @@ function CreateAssessment() {
                   onChange={(e) => handleOptionChange(qIndex, oIndex, "suggestion", e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg"
                 />
+                <button
+                  type="button"
+                  onClick={() => removeOption(qIndex, oIndex)}
+                  className="text-red-500 hover:underline"
+                >
+                  Remove Option
+                </button>
+
               </div>
             ))}
             <button
@@ -113,8 +132,18 @@ function CreateAssessment() {
               onClick={() => addOption(qIndex)}
               className="text-blue-500 hover:underline mb-4"
             >
-              + Add Option
+              Add Option
             </button>
+            <div className="flex right">
+            <button
+              type="button"
+              onClick={() => removeQuestion(qIndex)}
+              className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 mb-4"
+            >
+              Remove Question
+            </button>
+            </div>
+            
           </div>
         ))}
         <button
@@ -122,14 +151,17 @@ function CreateAssessment() {
           onClick={addQuestion}
           className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 mb-4"
         >
-          + Add Question
+          Add Question
         </button>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-        >
-          Submit
-        </button>
+        <br></br>
+        <div className="flex justify-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
